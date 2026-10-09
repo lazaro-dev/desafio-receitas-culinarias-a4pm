@@ -1,0 +1,47 @@
+
+services:
+  receitas-culinarias-app:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: receitas-culinarias-app
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      PORT: 8080
+      HOST: 0.0.0.0
+      CHOKIDAR_USEPOLLING: "true"
+      JWT_SECRET: 23353e06a6ab23a6a24cb2daabacb9bad8ff1edead77f3101ea1e20e37e5d0f1
+      DATABASE_URL: mysql://root:admin@mysql-db:3306/teste_receitas_rg_sistemas
+      TZ: America/Sao_Paulo
+    depends_on:
+      - mysql-db
+    networks:
+      - receitas-culinarias-network
+
+  mysql-db:
+    image: mysql:8.0.20
+    container_name: mysql-db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./prisma/db/migration/script.sql:/docker-entrypoint-initdb.d/script.sql
+      - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: teste_receitas_rg_sistemas
+      MYSQL_USER: root
+      TZ: America/Sao_Paulo
+    networks:
+      - receitas-culinarias-network
+
+networks:
+  receitas-culinarias-network:
+    driver: bridge
+
+
+volumes:
+  mysql-data:
