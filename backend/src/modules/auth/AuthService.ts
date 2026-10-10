@@ -17,7 +17,7 @@ export class AuthService {
     async login(dto: LoginDTO): Promise<AuthResponseDTO> {
         const user = await this.userRepository.findByLogin(dto.login);
 
-        if (!user) throw new NotFoundError("Usuário não encontrado.");
+        if (!user) throw new UnauthorizedError("Usuário ou senha incorreta.");
 
         const isCorrectPassword: boolean = await PasswordUtil.compare(dto.senha, user.senha);
 
