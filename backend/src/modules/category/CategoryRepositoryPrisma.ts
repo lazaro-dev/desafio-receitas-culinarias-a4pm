@@ -11,4 +11,12 @@ export class CategoryRepositoryPrisma implements CategoryRepository {
         const categories: PrismaCategory[] = await this.prisma.category.findMany();
         return categories.map(CategoryMapper.toDomain);
     }
+
+    async findById(id: number): Promise<Category | null> {
+        const category: PrismaCategory | null = await this.prisma.category.findUnique({ where: { id } });
+
+        if (!category) return null;
+
+        return CategoryMapper.toDomain(category);
+    }
 }
