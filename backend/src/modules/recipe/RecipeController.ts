@@ -50,7 +50,7 @@ export class RecipeController {
             porcoes: req.body.porcoes
         };
 
-        const result = await this.recipeService.update(dto);
+        const result = await this.recipeService.update(dto, req.user.id);
 
         return res.status(200).json(result);
     }
@@ -58,6 +58,6 @@ export class RecipeController {
     async delete(req: any, res: any) {
         const result = await this.recipeService.delete(Number(req.params.id) || 0);
 
-        return res.status(200).json(result);
+        return res.status(204).json();
     }
 }
