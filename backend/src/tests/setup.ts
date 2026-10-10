@@ -1,3 +1,10 @@
-process.env.DATABASE_URL = "mysql://root:root@localhost:3306/test";
-process.env.JWT_SECRET = "secret";
-process.env.NODE_ENV = "test";
+import { PrismaClientService } from "@/database/PrismaClient";
+
+beforeEach(async () => {
+    await PrismaClientService.recipe.deleteMany();
+    await PrismaClientService.user.deleteMany();
+});
+
+afterAll(async () => {
+    await PrismaClientService.$disconnect();
+});
