@@ -1,4 +1,4 @@
 export class Category {
-    constructor(private readonly id: number, private readonly nome?: string | null) {
+    constructor(public readonly id: number, public readonly nome?: string | null) {
      }
 }
