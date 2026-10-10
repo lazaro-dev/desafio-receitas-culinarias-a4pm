@@ -16,10 +16,10 @@ export function handle() {
                 return next();
             }
 
-            return res.status(401).json('Não autenticado');
+            return res.status(401).json({ message: 'Não autenticado' });
         } catch (error: any) {
             console.log(error);
-            return res.status(401).json('Token Inválido');
+            return res.status(401).json({ message: 'Token Inválido' });
         }
     }
 }
