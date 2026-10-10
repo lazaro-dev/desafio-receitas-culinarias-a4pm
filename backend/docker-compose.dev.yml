@@ -29,6 +29,7 @@ services:
       - "3306:3306"
     volumes:
       - ./prisma/db/migration/script.sql:/docker-entrypoint-initdb.d/script.sql
+      - ./prisma/db/migration/script_test_db.sql:/docker-entrypoint-initdb.d/script_test_db.sql
       - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: admin

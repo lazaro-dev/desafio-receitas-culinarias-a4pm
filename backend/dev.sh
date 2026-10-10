@@ -8,6 +8,9 @@ if [ "$1" = "-u" ]; then
 elif [ "$1" = "-b" ]; then
    docker compose -f docker-compose.dev.yml build "$2"
 
+elif [ "$1" = "-b-all" ]; then
+   docker compose -f docker-compose.dev.yml up -d --build
+
 else [ "$1" = "-d" ]
    docker compose -f docker-compose.dev.yml down
 fi
