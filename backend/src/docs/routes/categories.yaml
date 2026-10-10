@@ -1,0 +1,28 @@
+/api/v1/categories:
+  get:
+    security:
+      - bearerAuth: []
+    summary: Retorna todas as categorias.
+    tags:
+      - Category.Private
+    produces:
+      - application/json
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: Id da categoria.
+                    example: 8
+                  nome:
+                    type: string
+                    description: Nome da categoria.
+                    example: "Bebidas"
+      "401":
+        $ref: "#/components/responses/Unauthorized"

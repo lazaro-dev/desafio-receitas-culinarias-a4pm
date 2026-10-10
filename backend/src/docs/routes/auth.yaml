@@ -1,0 +1,131 @@
+/api/v1/auth/register:
+  post:
+    summary: Registra um novo usuário e retorna o token de acesso.
+    tags:
+      - Auth.Public
+    produces:
+      - application/json
+    requestBody:
+      description: Um JSON object contendo login and password
+      required: true
+      content:
+        application/json:
+          schema:
+            RegisterValidator:
+            type: object
+            properties:
+              nome:
+                type: string
+                description: Nome do usuário.
+                example: "Carla"
+              login:
+                type: string
+                description: Username para realizar login.
+                example: "carla"
+              senha:
+                type: string
+                description: Senha do usuário.
+                example: "carla123"
+            required:
+              - login
+              - senha
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Token JWT.
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3OTE2MzUwMTUsImV4cCI6MTc5MTYzODYxNSwic3ViIjoiMiJ9.qLG_28s20HqOV6EPOgG82LUBGzUFdcCBQTsl53OjtOs"
+                user:
+                  type: object
+                  description: Informações do usuário.
+                  properties:
+                    nome:
+                      type: string
+                      description: Nome do usuário.
+                      example: "Carla"
+                    login:
+                      type: string
+                      description: Username para realizar login.
+                      example: "carla"
+                    criado_em:
+                      type: string
+                      description: Data de criação do usuário.
+                      example: "2026-10-09T14:55:08.000Z"
+                    alterado_em:
+                      type: string
+                      description: Data de alteração do usuário.
+                      example: "2026-10-09T14:55:08.000Z"
+      "400":
+        $ref: "#/components/responses/BadRequest"
+      "422":
+        $ref: "#/components/responses/UnprocessableEntity"
+
+/api/v1/auth/login:
+  post:
+    summary: Login api.
+    tags:
+      - Auth.Public
+    produces:
+      - application/json
+    requestBody:
+      description: Um JSON object contendo login and password
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              login:
+                type: string
+                description: Username para realizar login.
+                example: "carla"
+              senha:
+                type: string
+                description: Senha do usuário.
+                example: "carla123"
+            required:
+              - login
+              - senha
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Token JWT.
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3OTE2MzUwMTUsImV4cCI6MTc5MTYzODYxNSwic3ViIjoiMiJ9.qLG_28s20HqOV6EPOgG82LUBGzUFdcCBQTsl53OjtOs"
+                user:
+                  type: object
+                  description: Informações do usuário.
+                  properties:
+                    nome:
+                      type: string
+                      description: Nome do usuário.
+                      example: "Carla"
+                    login:
+                      type: string
+                      description: Username para realizar login.
+                      example: "carla"
+                    criado_em:
+                      type: string
+                      description: Data de criação do usuário.
+                      example: "2026-10-09T14:55:08.000Z"
+                    alterado_em:
+                      type: string
+                      description: Data de alteração do usuário.
+                      example: "2026-10-09T14:55:08.000Z"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+      "404":
+        $ref: "#/components/responses/NotFound"
+      "422":
+        $ref: "#/components/responses/UnprocessableEntity"

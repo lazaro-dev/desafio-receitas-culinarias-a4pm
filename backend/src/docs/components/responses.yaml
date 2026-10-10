@@ -1,0 +1,60 @@
+components:
+  responses:
+    "200":
+      description: OK.
+    BadRequest:
+      description: Requisição inválida
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Token inválido ou ausente
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Recurso não encontrado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Acesso negado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: Campos inválidos
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorCustom'
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
+    ErrorCustom:
+      type: object
+      properties:
+        message:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+                description: Campo com erro.
+                example: "modo_preparo"
+              message:
+                type: string
+                description: Mensagem de erro.
+                example: "O modo de preparo deve ter no mínimo 1 caractere"
+

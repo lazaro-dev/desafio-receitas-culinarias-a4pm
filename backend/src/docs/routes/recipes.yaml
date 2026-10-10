@@ -1,0 +1,269 @@
+/api/v1/recipes:
+  get:
+    security:
+      - bearerAuth: []
+    summary: Retorna receitas com paginação.
+    tags:
+      - Recipe.Private
+    produces:
+      - application/json
+    parameters:
+      - name: page
+        in: query
+        description: Número da pagina.
+        required: false
+        schema:
+          type: integer
+          default: 1
+      - name: per_page
+        in: query
+        description: Quantidade de receitas por pagina.
+        required: false
+        schema:
+          type: integer
+          default: 10
+      - name: modo_preparo
+        in: query
+        description: Modo de preparo da receita.
+        required: false
+        schema:
+          type: string
+      - name: id_categorias
+        in: query
+        description: Id da categoria.
+        required: false
+        schema:
+          type: integer
+      - name: nome
+        in: query
+        description: Nome da receita.
+        required: false
+        schema:
+          type: string
+      - name: tempo_preparo_minutos
+        in: query
+        description: Tempo de preparo da receita.
+        required: false
+        schema:
+          type: integer
+      - name: porcoes
+        in: query
+        description: Porcoes da receita.
+        required: false
+        schema:
+          type: integer
+      - name: ingredientes
+        in: query
+        description: Ingredientes da receita.
+        required: false
+        schema:
+          type: string
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                page:
+                  type: integer
+                  description: Número da pagina.
+                  example: 1
+                per_page:
+                  type: integer
+                  description: Quantidade de receitas por pagina.
+                  example: 10
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Recipe"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+
+  post:
+    security:
+      - bearerAuth: []
+    summary: Cria uma nova receita.
+    tags:
+      - Recipe.Private
+    produces:
+      - application/json
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+                description: Nome da receita.
+                example: "Bolo de chocolate"
+              id_categorias:
+                type: integer
+                description: Id da categoria.
+                example: 2
+              modo_preparo:
+                type: string
+                description: Modo de preparo da receita.
+                example: "Coloque o bolo na foga."
+              tempo_preparo_minutos:
+                type: integer
+                description: Tempo de preparo da receita em minutos.
+                example: 20
+              ingredientes:
+                type: string
+                description: Ingredientes da receita.
+                example: "1 colher de manteiga..."
+              porcoes:
+                type: integer
+                description: Porções da receita.
+                example: 4
+            required:
+              - modo_preparo
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Recipe"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+      "404":
+        $ref: "#/components/responses/NotFound"
+      "422":
+        $ref: "#/components/responses/UnprocessableEntity"
+
+/api/v1/recipes/{id}:
+  put:
+    security:
+      - bearerAuth: []
+    summary: Atualiza uma receita.
+    tags:
+      - Recipe.Private
+    produces:
+      - application/json
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nome:
+                type: string
+                description: Nome da receita.
+                example: "Bolo de chocolate"
+              id_categorias:
+                type: integer
+                description: Id da categoria.
+                example: 2
+              modo_preparo:
+                type: string
+                description: Modo de preparo da receita.
+                example: "Coloque o bolo na foga."
+              tempo_preparo_minutos:
+                type: integer
+                description: Tempo de preparo da receita em minutos.
+                example: 20
+              ingredientes:
+                type: string
+                description: Ingredientes da receita.
+                example: "1 colher de manteiga..."
+              porcoes:
+                type: integer
+                description: Porções da receita.
+                example: 4
+            required:
+              - modo_preparo
+    responses:
+      "200":
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Recipe"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+      "403":
+        $ref: "#/components/responses/Forbidden"
+      "404":
+        $ref: "#/components/responses/NotFound"
+      "422":
+        $ref: "#/components/responses/UnprocessableEntity"
+
+  delete:
+    security:
+      - bearerAuth: []
+    summary: Deleta uma receita.
+    tags:
+      - Recipe.Private
+    produces:
+      - application/json
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    responses:
+      "204":
+        description: Receita deletada com sucesso.
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+      "403":
+        $ref: "#/components/responses/Forbidden"
+      "404":
+        $ref: "#/components/responses/NotFound"
+
+components:
+  schemas:
+    Recipe:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID da receita.
+          example: 2
+        nome:
+          type: string
+          description: Nome da receita.
+          example: "Bolo de chocolate"
+        id_usuarios:
+          type: integer
+          description: Id do usuário.
+          example: 2
+        id_categorias:
+          type: integer
+          description: Id da categoria.
+          example: 2
+        modo_preparo:
+          type: string
+          description: Modo de preparo da receita.
+          example: "Coloque o bolo..."
+        tempo_preparo_minutos:
+          type: integer
+          description: Tempo de preparo da receita em minutos.
+          example: 20
+        ingredientes:
+          type: string
+          description: Ingredientes da receita.
+          example: "1 colher de manteiga..."
+        porcoes:
+          type: integer
+          description: Porções da receita.
+          example: 4
+        criado_em:
+          type: string
+          description: Data de criação da receita.
+          example: "2026-10-09T14:55:08.000Z"
+        alterado_em:
+          type: string
+          description: Data de alteração da receita.
+          example: "2026-10-09T14:55:08.000Z"
+        
