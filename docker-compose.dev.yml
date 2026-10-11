@@ -1,14 +1,31 @@
 
 services:
+  receitas-culinarias-frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: receitas-culinarias-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - receitas-culinarias-app
+    networks:
+      - receitas-culinarias-network
+
   receitas-culinarias-app:
     build: 
-      context: .
+      context: ./backend
       dockerfile: Dockerfile.dev
     container_name: receitas-culinarias-app
     ports:
       - "8080:8080"
     volumes:
-      - .:/app
+      - ./backend:/app
       - /app/node_modules
     environment:
       PORT: 8080
@@ -28,8 +45,8 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./prisma/db/migration/script.sql:/docker-entrypoint-initdb.d/script.sql
-      - ./prisma/db/migration/script_test_db.sql:/docker-entrypoint-initdb.d/script_test_db.sql
+      - ./backend/prisma/db/migration/script.sql:/docker-entrypoint-initdb.d/script.sql
+      - ./backend/prisma/db/migration/script_test_db.sql:/docker-entrypoint-initdb.d/script_test_db.sql
       - mysql-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: admin
