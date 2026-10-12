@@ -3,6 +3,7 @@ import { HttpService } from "@/services/http.service";
 import type { CreateRecipeDTO, RecipeApiDTO, SearchRecipeDTO, UpdateRecipeDTO } from "@/services/dtos/recipe.dto";
 import { RecipeMapper } from "@/services/mappers/RecipeMapper";
 import type { PaginationDTO } from "@/services/dtos/pagination.dto";
+import type { Recipe } from '@/entities/recipe';
 
 
 export class RecipeService {
@@ -30,8 +31,9 @@ export class RecipeService {
         return {
             per_page: response.per_page,
             page: response.page,
+            total: response.total,
             data: response.data.map(RecipeMapper.toDomain),
-        } as PaginationDTO<RecipeApiDTO>;
+        } as PaginationDTO<Recipe>;
     }
 
     static async create(dto: CreateRecipeDTO) {
@@ -41,14 +43,12 @@ export class RecipeService {
     }
 
     static async update(dto: UpdateRecipeDTO, id: number) {
-        const response = await HttpService.put<RecipeApiDTO>('/recipes' + id, dto, true);
+        const response = await HttpService.put<RecipeApiDTO>('/recipes/' + id, dto, true);
 
         return RecipeMapper.toDomain(response);
     }
 
     static async delete(id: number) {
-        const response = await HttpService.delete<RecipeApiDTO>('/recipes/' + id, true);
-
-        return RecipeMapper.toDomain(response);
+        await HttpService.delete<RecipeApiDTO>('/recipes/' + id, true);
     }
 }

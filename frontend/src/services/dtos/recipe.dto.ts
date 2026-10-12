@@ -1,3 +1,6 @@
+import type { Recipe } from "@/entities/recipe";
+import type { CategoryApiDTO } from "./category.dto";
+
 export interface SearchRecipeDTO {
     page?: string;
     per_page?: string;
@@ -18,17 +21,17 @@ export interface RecipeApiDTO {
     porcoes: number | null;
     criado_em: string;
     alterado_em: string;
+    categoria: CategoryApiDTO | null;
 }
 
 export interface PaginateResponseRecipeDTO {
     page: number;
     per_page: number;
     total: number;
-    data: RecipeApiDTO[];
+    data: Recipe[];
 }
 
 export interface CreateRecipeDTO {
-    id_usuarios: number;
     modo_preparo: string;
     id_categorias: number | null;
     nome: string | null;

@@ -1,7 +1,8 @@
 import type { Recipe } from "@/entities/recipe";
 import type { RecipeApiDTO } from "@/services/dtos/recipe.dto";
+import { CategoryMapper } from "./CategoryMapper";
 
-export class RecipeMapper { 
+export class RecipeMapper {
     static toDomain(data: RecipeApiDTO): Recipe {
         return {
             id: data.id,
@@ -13,7 +14,8 @@ export class RecipeMapper {
             tempo_preparo_minutos: data.tempo_preparo_minutos ?? null,
             porcoes: data.porcoes ?? null,
             criado_em: data.criado_em,
-            alterado_em: data.alterado_em
+            alterado_em: data.alterado_em,
+            categoria: data.categoria ? CategoryMapper.toDomain(data.categoria) : null
         };
     }
 }

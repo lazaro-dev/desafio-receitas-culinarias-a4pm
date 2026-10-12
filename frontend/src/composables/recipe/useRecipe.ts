@@ -102,6 +102,7 @@ export function useRecipe() {
         remove,
         setRecipeSelected,
         data,
+        loadingSearchSubmit,
         loadingCreateSubmit,
         loadingUpdateSubmit,
         loadingDeleteSubmit,

@@ -1,3 +1,5 @@
+import type { Category } from "./category";
+
 export interface Recipe {
     id: number,
     modo_preparo: string,
@@ -8,5 +10,6 @@ export interface Recipe {
     tempo_preparo_minutos: number | null,
     porcoes: number | null,
     criado_em: string,
-    alterado_em: string
+    alterado_em: string,
+    categoria: Category | null
 }
