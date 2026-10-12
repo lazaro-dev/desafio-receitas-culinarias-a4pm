@@ -99,6 +99,7 @@ const abbreviate = (text: string) => text.substring(0, 20);
                 <button
                     class="min-w-9 rounded-md bg-orange-600 py-1 px-3 border border-transparent text-center text-sm text-white shadow-md focus:bg-orange-700 focus:shadow-none hover:bg-orange-700 active:shadow-non ml-2"
                     :class="[{ 'bg-orange-600 text-white': true }]"
+                    v-if="data.data?.length > 0"
                 >
                     {{ data.page }}
                 </button>
