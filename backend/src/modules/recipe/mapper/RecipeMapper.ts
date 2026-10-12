@@ -1,8 +1,10 @@
 import { Recipe } from "@/modules/recipe/entity/Recipe";
-import { Recipe as PrismaRecipe } from "@prisma/client";
+import { Recipe as PrismaRecipe, Category } from "@prisma/client";
+
+type RecipeWithCategory = PrismaRecipe & { categoria: Category | null };
 
 export class RecipeMapper {
-    static toDomain(data: PrismaRecipe): Recipe {
+    static toDomain(data: RecipeWithCategory): Recipe {
         return new Recipe(
             data.id,
             data.modo_preparo,
@@ -13,7 +15,8 @@ export class RecipeMapper {
             data.tempo_preparo_minutos ?? null,
             data.porcoes ?? null,
             data.criado_em,
-            data.alterado_em
+            data.alterado_em,
+            data.categoria ?? null
         );
     }
 }

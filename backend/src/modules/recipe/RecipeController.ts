@@ -11,9 +11,9 @@ export class RecipeController {
             page: req.query.page,
             per_page: req.query.per_page,
             search: req.query.search,
-            id_categorias: req.query.id_categorias,
-            tempo_preparo_minutos: req.query.tempo_preparo_minutos,
-            porcoes: req.query.porcoes,
+            id_categorias: req.query.id_categorias ? parseInt(req.query.id_categorias) : undefined,
+            tempo_preparo_minutos: req.query.tempo_preparo_minutos ? parseInt(req.query.tempo_preparo_minutos) : undefined,
+            porcoes: req.query.porcoes ? parseInt(req.query.porcoes) : undefined,
         }
 
         const result = await this.recipeService.search(dto, req.user.id);

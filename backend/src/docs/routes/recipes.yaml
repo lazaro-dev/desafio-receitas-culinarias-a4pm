@@ -22,9 +22,9 @@
         schema:
           type: integer
           default: 10
-      - name: modo_preparo
+      - name: search
         in: query
-        description: Modo de preparo da receita.
+        description: Busca de receitas.
         required: false
         schema:
           type: string
@@ -34,12 +34,6 @@
         required: false
         schema:
           type: integer
-      - name: nome
-        in: query
-        description: Nome da receita.
-        required: false
-        schema:
-          type: string
       - name: tempo_preparo_minutos
         in: query
         description: Tempo de preparo da receita.
@@ -52,12 +46,6 @@
         required: false
         schema:
           type: integer
-      - name: ingredientes
-        in: query
-        description: Ingredientes da receita.
-        required: false
-        schema:
-          type: string
     responses:
       "200":
         content:
@@ -266,4 +254,15 @@ components:
           type: string
           description: Data de alteração da receita.
           example: "2026-10-09T14:55:08.000Z"
+        categoria:
+          type: object
+          properties:
+            id:
+              type: integer
+              description: ID da categoria.
+              example: 2
+            nome:
+              type: string
+              description: Nome da categoria.
+              example: "Bolo"
         

@@ -13,7 +13,12 @@ export class RecipeRepositoryPrisma implements RecipeRepository {
     constructor(private readonly prisma: PrismaClient) { }
 
     async findById(id: number, userId: number): Promise<Recipe | null> {
-        const recipe = await this.prisma.recipe.findUnique({ where: { id, id_usuarios: userId } });
+        const recipe = await this.prisma.recipe.findUnique({
+            include: {
+                categoria: true
+            },
+            where: { id, id_usuarios: userId }
+        });
 
         if (!recipe) return null;
 
@@ -25,20 +30,22 @@ export class RecipeRepositoryPrisma implements RecipeRepository {
         const page = dto.page ? parseInt(dto.page) : 1;
         const skipCalc = page ? (page - 1) * perPage : 0;
         const total = await this.prisma.recipe.count();
-        const searchContent = dto.search ? dto.search : undefined;
+
+        const isSerchContent = dto.search
+            ? [
+                { modo_preparo: { contains: dto.search } },
+                { nome: { contains: dto.search } },
+                { ingredientes: { contains: dto.search } },
+            ]
+            : undefined;
 
         const recipes = await this.prisma.recipe.findMany({
+            include: {
+                categoria: true
+            },
             where: {
                 id_usuarios: userId,
-                modo_preparo: {
-                    contains: searchContent,
-                },
-                nome: {
-                    contains: searchContent
-                },
-                ingredientes: {
-                    contains: searchContent
-                },
+                OR: isSerchContent,
                 id_categorias: dto.id_categorias ? dto.id_categorias : undefined,
                 tempo_preparo_minutos: dto.tempo_preparo_minutos ? dto.tempo_preparo_minutos : undefined,
                 porcoes: dto.porcoes ? dto.porcoes : undefined
@@ -60,6 +67,9 @@ export class RecipeRepositoryPrisma implements RecipeRepository {
 
     async create(dto: CreateRecipeDTO, userId: number): Promise<Recipe> {
         const recipe = await this.prisma.recipe.create({
+            include: {
+                categoria: true
+            },
             data: {
                 modo_preparo: dto.modo_preparo,
                 id_usuarios: userId,
@@ -78,6 +88,9 @@ export class RecipeRepositoryPrisma implements RecipeRepository {
 
     async update(dto: UpdateRecipeDTO, userId: number): Promise<Recipe> {
         const recipe = await this.prisma.recipe.update({
+            include: {
+                categoria: true
+            },
             where: { id: dto.id, id_usuarios: userId },
             data: {
                 modo_preparo: dto.modo_preparo,
