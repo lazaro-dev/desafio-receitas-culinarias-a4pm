@@ -10,15 +10,13 @@ export class RecipeController {
         const dto: SearchRecipeDTO = {
             page: req.query.page,
             per_page: req.query.per_page,
-            modo_preparo: req.query.modo_preparo,
+            search: req.query.search,
             id_categorias: req.query.id_categorias,
-            nome: req.query.nome,
             tempo_preparo_minutos: req.query.tempo_preparo_minutos,
             porcoes: req.query.porcoes,
-            ingredientes: req.query.ingredientes
         }
 
-        const result = await this.recipeService.search(dto);
+        const result = await this.recipeService.search(dto, req.user.id);
 
         return res.status(200).json(result);
     }
@@ -26,7 +24,6 @@ export class RecipeController {
     async create(req: any, res: any) {
         const dto: CreateRecipeDTO = {
             modo_preparo: req.body.modo_preparo,
-            id_usuarios: req.user.id,
             id_categorias: req.body.id_categorias,
             nome: req.body.nome,
             ingredientes: req.body.ingredientes,
@@ -34,7 +31,7 @@ export class RecipeController {
             porcoes: req.body.porcoes
         };
 
-        const result = await this.recipeService.create(dto);
+        const result = await this.recipeService.create(dto, req.user.id);
 
         return res.status(201).json(result);
     }
@@ -56,7 +53,7 @@ export class RecipeController {
     }
 
     async delete(req: any, res: any) {
-        const result = await this.recipeService.delete(Number(req.params.id) || 0);
+        const result = await this.recipeService.delete(Number(req.params.id) || 0, req.user.id);
 
         return res.status(204).json();
     }

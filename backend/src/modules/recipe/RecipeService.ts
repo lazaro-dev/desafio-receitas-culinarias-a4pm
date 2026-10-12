@@ -12,38 +12,41 @@ export class RecipeService {
         private categoryRepository: CategoryRepository
     ) { }
 
-    async search(dto: SearchRecipeDTO) {
-        return this.recipeRepository.search(dto);
+    async search(dto: SearchRecipeDTO, userId: number) {
+        return this.recipeRepository.search(dto, userId);
     }
 
-    async create(dto: CreateRecipeDTO) {
-        const recipe = await this.categoryRepository.findById(dto.id_categorias as number);
+    async create(dto: CreateRecipeDTO, userId: number) {
 
-        if (!recipe) throw new NotFoundError("Categoria não encontrada.");
+        if (dto.id_categorias) {
+            const recipe = await this.categoryRepository.findById(dto.id_categorias as number);
+            
+            if (!recipe) throw new NotFoundError("Categoria não encontrada.");
+        }
 
-        const result = this.recipeRepository.create(dto);
+        const result = this.recipeRepository.create(dto, userId);
 
         return result;
     }
 
-    async update(dto: UpdateRecipeDTO, id_usuarios: number) {
-        const recipe = await this.recipeRepository.findById(dto.id);
+    async update(dto: UpdateRecipeDTO, userId: number) {
+        const recipe = await this.recipeRepository.findById(dto.id, userId);
 
         if (!recipe) throw new NotFoundError("Receita não encontrada.");
 
-        if (recipe.id_usuarios !== id_usuarios) throw new AccessDeniedError("Receita não pertence ao usuário.");
+        if (recipe.id_usuarios !== userId) throw new AccessDeniedError("Receita não pertence ao usuário.");
 
-        const result = this.recipeRepository.update(dto);
+        const result = this.recipeRepository.update(dto, userId);
 
         return result;
     }
 
-    async delete(id: number) {
-        const recipe = await this.recipeRepository.findById(id);
+    async delete(id: number, userId: number) {
+        const recipe = await this.recipeRepository.findById(id, userId);
 
         if (!recipe) throw new NotFoundError("Receita não encontrada.");
 
-        const result = this.recipeRepository.delete(id);
+        const result = this.recipeRepository.delete(id, userId);
 
         return result;
     }

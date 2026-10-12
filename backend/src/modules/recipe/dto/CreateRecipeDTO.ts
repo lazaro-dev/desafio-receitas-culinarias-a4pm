@@ -1,5 +1,4 @@
 export interface CreateRecipeDTO {
-    id_usuarios: number;
     modo_preparo: string;
     id_categorias: number | null;
     nome: string | null;
