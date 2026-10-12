@@ -7,6 +7,7 @@ import ItemFormGroup from "@/components/shared/form/ItemFormGroup.vue";
 import CardSimple from "@/components/shared/card/CardSimple.vue";
 import ButtonBase from "@/components/shared/button/ButtonBase.vue";
 import { ref } from "vue";
+import { useAuth } from "@/composables/auth/useAuth";
 
 interface ValueForm<T> {
     value: T;
@@ -26,7 +27,8 @@ const form = ref<FormLogin>({
     senha: { value: "", error: "" },
     confirmar_senha: { value: "", error: "" },
 });
-const loadingRegisterSubmit = ref(false);
+
+const { loading, register } = useAuth();
 
 const resetForm = () => {
     form.value = {
@@ -37,10 +39,10 @@ const resetForm = () => {
     };
 };
 
-const register = () => {
+const registerLocal = () => {
     let formValid = true;
     const payload = {
-        nome: !form.value.nome.value ? undefined : form.value.nome.value,
+        nome: form.value.nome.value || null,
         login: form.value.login.value,
         senha: form.value.senha.value,
     };
@@ -60,25 +62,23 @@ const register = () => {
         formValid = false;
     }
 
+    console.log(formValid);
     if (!formValid) {
         return;
     }
 
-    // if (!payload.nome) {
-    //     delete payload.nome;
-    // }
-
-    loadingRegisterSubmit.value = true;
-
-    resetForm();
-    console.log(payload);
+    register(payload).then((result) => {
+        if (result) {
+            resetForm();
+        }
+    });
 };
 </script>
 <template>
     <div class="flex justify-center w-full">
         <CardSimple class="sm:w-full sm:max-w-md lg:min-w-100">
             <FormGroup title="Criar Conta">
-                <FormBase @submit.prevent="register" class="flex flex-col gap-4">
+                <FormBase @submit.prevent="registerLocal" class="flex flex-col gap-4">
                     <ItemFormGroup>
                         <InputText
                             v-model="form.nome.value"
@@ -119,9 +119,9 @@ const register = () => {
                         type="submit"
                         class="py-1 px-2"
                         :color-type="'bg-orange-600 text-white hover:bg-orange-700'"
-                        :disabled="loadingRegisterSubmit"
+                        :disabled="loading"
                     >
-                        <span v-if="!loadingRegisterSubmit">Criar</span>
+                        <span v-if="!loading">Criar</span>
                         <span v-else>Criando...</span>
                     </ButtonBase>
                     <div class="mt-6">

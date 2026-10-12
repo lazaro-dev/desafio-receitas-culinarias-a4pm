@@ -1,9 +1,5 @@
 <script setup lang="ts">
 defineProps({
-    modelValue: {
-        type: String,
-        required: true,
-    },
     placeholder: {
         type: String,
         required: false,
@@ -38,4 +34,6 @@ const modelValue = defineModel<string>({ required: true });
         v-model="modelValue"
         :placeholder="placeholder"
     />
+
+    <p v-if="error" class="text-red-500 text-xs mt-1">{{ error }}</p>
 </template>

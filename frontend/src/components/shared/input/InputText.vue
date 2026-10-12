@@ -1,9 +1,5 @@
 <script setup lang="ts">
 defineProps({
-    modelValue: {
-        type: String,
-        required: true,
-    },
     placeholder: {
         type: String,
         required: false,

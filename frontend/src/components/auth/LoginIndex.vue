@@ -6,6 +6,7 @@ import InputPassword from "@/components/shared/input/InputPassword.vue";
 import ItemFormGroup from "@/components/shared/form/ItemFormGroup.vue";
 import CardSimple from "@/components/shared/card/CardSimple.vue";
 import ButtonBase from "@/components/shared/button/ButtonBase.vue";
+import { useAuth } from "@/composables/auth/useAuth";
 import { ref } from "vue";
 
 interface FormLogin {
@@ -17,17 +18,21 @@ const form = ref<FormLogin>({
     login: "",
     senha: "",
 });
-const loadingSignInSubmit = ref(false);
 
-const signIn = () => {
-    loadingSignInSubmit.value = true;
+const { loading, signIn } = useAuth();
+
+const signInLocal = () => {
+    signIn({
+        login: form.value.login,
+        senha: form.value.senha,
+    });
 };
 </script>
 <template>
     <div class="flex justify-center w-full">
         <CardSimple>
             <FormGroup title="Entrar">
-                <FormBase @submit.prevent="signIn" class="flex flex-col gap-4">
+                <FormBase @submit.prevent="signInLocal" class="flex flex-col gap-4">
                     <ItemFormGroup>
                         <InputText
                             v-model="form.login"
@@ -47,9 +52,9 @@ const signIn = () => {
                         type="submit"
                         class="py-1 px-2"
                         :color-type="'bg-orange-600 text-white hover:bg-orange-700'"
-                        :disabled="loadingSignInSubmit"
+                        :disabled="loading"
                     >
-                        <span v-if="!loadingSignInSubmit">Entrar</span>
+                        <span v-if="!loading">Entrar</span>
                         <span v-else>Entrando...</span>
                     </ButtonBase>
                     <div class="mt-6">
