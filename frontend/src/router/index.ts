@@ -11,6 +11,7 @@ const router = createRouter({
       path: "/",
       component: AppLayout,
       meta: { auth: false },
+      redirect: { name: 'login' },
       children: [
         {
           path: '/entrar',
