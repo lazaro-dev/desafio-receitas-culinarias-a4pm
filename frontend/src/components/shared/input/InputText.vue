@@ -18,7 +18,7 @@ defineProps({
     }
 });
 
-const modelValue = defineModel<string>({ required: true });
+const modelValue = defineModel<string | null>({ required: true });
 </script>
 
 <template>

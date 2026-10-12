@@ -20,9 +20,9 @@ const props = withDefaults(
 const colorTypeClasses = computed(() => {
     const variants: Record<string, string> = {
         primary: "bg-orange-600 text-white hover:bg-emerald-700",
-        secondary: "bg-secondary text-text-color hover:bg-opacity-90",
-        danger: "bg-negative-color text-white hover:bg-opacity-90",
-        success: "bg-positive-color text-white hover:bg-opacity-90",
+        secondary: "bg-blue-600 text-white hover:bg-opacity-90",
+        danger: "bg-red-600 text-white hover:bg-opacity-90",
+        success: "bg-green-600 text-white hover:bg-opacity-90",
     };
 
     if (props.colorType in variants) {
