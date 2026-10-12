@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { CategoryService } from "@/services/category.service";
 import type { Category } from "@/entities/category";
 
-export function useRecipe() {
+export function useCategories() {
     const notification = useToastNotification();
 
     const loadingCategories = ref(false);

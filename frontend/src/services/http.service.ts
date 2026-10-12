@@ -73,6 +73,10 @@ export class HttpService {
             headers: this.getHeaders(withToken)
         });
 
+        if (response.status === 204) {
+            return;
+        }
+
         const json = await response.json();
 
         if (!response.ok) {
