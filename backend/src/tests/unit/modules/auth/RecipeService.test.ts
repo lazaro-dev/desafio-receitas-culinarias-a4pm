@@ -14,7 +14,6 @@ describe('RecipeService', () => {
 
         const data: CreateRecipeDTO = {
             modo_preparo: 'Modo de preparo',
-            id_usuarios: 1,
             id_categorias: 1,
             nome: 'Receita 1',
             ingredientes: 'Ingredientes',
@@ -22,7 +21,7 @@ describe('RecipeService', () => {
             porcoes: 4
         }
 
-        const result = await recipeService.create(data);
+        const result = await recipeService.create(data, 1);
 
         expect(result).instanceOf(Recipe);
         expect(result).toMatchObject(data);

@@ -4,12 +4,6 @@ import app from '@/App';
 import { UserRepositoryPrisma } from '@/modules/user/UserRepositoryPrisma';
 import { PrismaClientService } from '@/database/PrismaClient';
 
-// Login válido retorna token.
-
-// Rota protegida sem token retorna 401.
-
-// Token inválido ou expirado é rejeitado.
-
 describe('Auth e2e', () => {
 
     it('Login válido', async () => {

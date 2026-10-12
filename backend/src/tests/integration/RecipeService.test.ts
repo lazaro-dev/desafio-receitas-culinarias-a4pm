@@ -24,7 +24,6 @@ describe('RecipeService', () => {
 
         const data: CreateRecipeDTO = {
             modo_preparo: 'Modo de preparo',
-            id_usuarios: user.id,
             id_categorias: 1,
             nome: 'Receita 1',
             ingredientes: 'Ingredientes',
@@ -32,8 +31,8 @@ describe('RecipeService', () => {
             porcoes: 4
         }
 
-        const result = await recipeService.create(data);
-        const recipe = await recipeRepository.findById(result.id);
+        const result = await recipeService.create(data, user.id);
+        const recipe = await recipeRepository.findById(result.id, user.id);
 
         expect(recipe).instanceOf(Recipe);
         expect(recipe).toMatchObject(data);
@@ -54,38 +53,35 @@ describe('RecipeService', () => {
 
         const recipe = await recipeRepository.create({
             modo_preparo: 'Modo de preparo',
-            id_usuarios: user.id,
             id_categorias: null,
             nome: 'Receita 1',
             ingredientes: 'Ingredientes',
             tempo_preparo_minutos: 30,
             porcoes: 4
-        })
+        }, user.id)
 
         const data: SearchRecipeDTO = {
             page: '1',
             per_page: '3',
-            modo_preparo: recipe.modo_preparo,
+            search: recipe.modo_preparo,
             id_categorias: recipe.id_categorias,
-            nome: recipe.nome,
             tempo_preparo_minutos: recipe.tempo_preparo_minutos,
             porcoes: recipe.porcoes,
-            ingredientes: recipe.ingredientes
         }
 
-        const result = await recipeService.search(data);
+        const result = await recipeService.search(data, user.id);
 
         expect(result.data).toHaveLength(1);
         expect(result.page).toBe(1);
         expect(result.per_page).toBe(3);
-        expect(result.data?.[0]).toMatchObject({
-            modo_preparo: data.modo_preparo,
-            id_categorias: data.id_categorias,
-            nome: data.nome,
-            tempo_preparo_minutos: data.tempo_preparo_minutos,
-            porcoes: data.porcoes,
-            ingredientes: data.ingredientes
-        });
+        expect(result.data?.[0]).toEqual(
+            expect.objectContaining({
+                modo_preparo: recipe.modo_preparo,
+                id_categorias: recipe.id_categorias,
+                tempo_preparo_minutos: recipe.tempo_preparo_minutos,
+                porcoes: recipe.porcoes,
+            })
+        );
     })
 
 })

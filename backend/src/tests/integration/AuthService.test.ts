@@ -16,11 +16,10 @@ describe('AuthService', () => {
 
         const user: User | null = await userRepository.findByLogin(userNew.user.login);
 
-        const isCorrectPassword: boolean = await PasswordUtil.compare('senha', user!.senha);
 
         expect(user?.senha).not.toBe('Usuário ou senha incorreta.');
         expect(user?.login).toBe('login');
-        expect(isCorrectPassword).toBe(true);
+        expect(await PasswordUtil.compare('senha1', user!.senha)).toBe(true);
     })
 
     it('Não permitir registrar o usuário com o mesmo login', async () => {
