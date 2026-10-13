@@ -38,12 +38,27 @@ Para nível Tech Lead, esses itens são obrigatórios.
 
 ## Inicialização do ambiente
 
-### 1. Subir infraestrutura completa
+### 1. Subir infraestrutura completa (Linux, Git Bash ou WSL)
 Na raiz do projeto onde se encontra o dev.sh e o docker-compose.dev.yml execute no terminal:
 
-# Linux, Git Bash ou WSL
+### UP
 ```bash
 ./dev.sh -u
+```
+
+### DOWN
+```bash
+./dev.sh -u
+```
+
+### BUILD
+```bash
+./dev.sh -b nome-container
+```
+
+### BUILD ALL
+```bash
+./dev.sh -b-all
 ```
 
 ### 2. Acessar a aplicação
