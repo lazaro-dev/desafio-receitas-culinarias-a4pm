@@ -3,7 +3,7 @@
 ## Objetivo
 O desafio consiste em implementar o máximo de funcionalidades descritas abaixo e enviar o projeto dentro do prazo estabelecido pela empresa.
 
-# Funcionalidades
+## Funcionalidades
 
 Cadastro de usuário no sistema.
 Login de usuário.
